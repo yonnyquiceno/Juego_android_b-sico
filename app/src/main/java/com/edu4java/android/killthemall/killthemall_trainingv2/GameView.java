@@ -49,6 +49,7 @@ public class GameView extends SurfaceView {
         sprites.add(createSprite(R.mipmap.descarga));
         sprites.add(createSprite(R.mipmap.orco));
         sprites.add(createSprite(R.mipmap.hombre));
+        sprites.add(createSprite(R.mipmap.hombre2));
 
 
     }
