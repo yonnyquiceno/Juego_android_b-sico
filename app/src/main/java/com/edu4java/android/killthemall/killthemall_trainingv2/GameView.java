@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,12 +19,13 @@ import java.util.List;
 public class GameView extends SurfaceView {
 
 
-    private List<Sprite> sprites = new ArrayList<Sprite>();
+    public List<Sprite> sprites = new ArrayList<Sprite>();
     private Bitmap bmp;
     private Bitmap bmp1;
     private SurfaceHolder holder;
     private GameLoopThread gameLoopThread;
     private long lastTouch;
+    private boolean golpeado=false;
 
     public GameView(Context context) {
         super(context);
@@ -50,6 +52,7 @@ public class GameView extends SurfaceView {
         sprites.add(createSprite(R.mipmap.orco));
         sprites.add(createSprite(R.mipmap.hombre));
         sprites.add(createSprite(R.mipmap.hombre2));
+        sprites.add(createSprite(R.mipmap.orco));
 
 
     }
@@ -62,22 +65,36 @@ public class GameView extends SurfaceView {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
+        escribir(canvas, String.valueOf(sprites.size()));
         for (Sprite sprite : sprites){
             sprite.onDraw(canvas);
         }
+    }
+
+    public void escribir(Canvas canvas, String text){
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setTextSize(80);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawText(text, 200, 100, paint);
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (System.currentTimeMillis()-lastTouch>300) {
+        if (System.currentTimeMillis()-lastTouch>100) {
             lastTouch = System.currentTimeMillis();
 
             synchronized (getHolder()) {
                 for (int i = sprites.size() - 1; i >= 0; i--) {
                     Sprite sprite = sprites.get(i);
                     if (sprite.isCollition(event.getX(), event.getY())) {
-                        sprites.remove(sprite);
+
+                        int healt = sprite.golpe();
+                        if (healt == 0){
+                            sprites.remove(sprite);
+                        }
                         break;
                     }
                 }
