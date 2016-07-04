@@ -20,15 +20,16 @@ public class GameView extends SurfaceView {
 
 
     public List<Sprite> sprites = new ArrayList<Sprite>();
-    private Bitmap bmp;
-    private Bitmap bmp1;
+    public List<Sprite2> sprites2 = new ArrayList<Sprite2>();
     private SurfaceHolder holder;
     private GameLoopThread gameLoopThread;
     private long lastTouch;
     private boolean golpeado=false;
+    private Sprite2 sprite2;
 
     public GameView(Context context) {
         super(context);
+
 
 
         gameLoopThread= new GameLoopThread(this);
@@ -53,6 +54,9 @@ public class GameView extends SurfaceView {
         sprites.add(createSprite(R.mipmap.hombre));
         sprites.add(createSprite(R.mipmap.hombre2));
         sprites.add(createSprite(R.mipmap.orco));
+        sprites2.add(createSprite2(R.mipmap.destroyer));
+
+
 
 
     }
@@ -60,6 +64,12 @@ public class GameView extends SurfaceView {
     private Sprite createSprite(int resouce) {
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), resouce);
         return new Sprite(this,bmp);
+
+    }
+
+    private Sprite2 createSprite2(int resouce) {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), resouce);
+        return new Sprite2(this,bmp);
     }
 
     @Override
@@ -87,7 +97,8 @@ public class GameView extends SurfaceView {
             lastTouch = System.currentTimeMillis();
 
             synchronized (getHolder()) {
-                for (int i = sprites.size() - 1; i >= 0; i--) {
+
+                for (int i = sprites.size() - 2; i >= 0; i--) {
                     Sprite sprite = sprites.get(i);
                     if (sprite.isCollition(event.getX(), event.getY())) {
 
@@ -97,6 +108,13 @@ public class GameView extends SurfaceView {
                         }
                         break;
                     }
+
+                }
+
+                Sprite2 sprite2 =sprites2.get(0);
+
+                if (sprite2.isLeftTouch(event.getX())){
+                    sprite2.update();
                 }
 
             }
