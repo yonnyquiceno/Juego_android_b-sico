@@ -79,6 +79,9 @@ public class GameView extends SurfaceView {
         for (Sprite sprite : sprites){
             sprite.onDraw(canvas);
         }
+
+
+        sprites2.get(0).onDraw(canvas);
     }
 
     public void escribir(Canvas canvas, String text){
@@ -98,7 +101,7 @@ public class GameView extends SurfaceView {
 
             synchronized (getHolder()) {
 
-                for (int i = sprites.size() - 2; i >= 0; i--) {
+                for (int i = sprites.size() - 1; i >= 0; i--) {
                     Sprite sprite = sprites.get(i);
                     if (sprite.isCollition(event.getX(), event.getY())) {
 
@@ -112,10 +115,11 @@ public class GameView extends SurfaceView {
                 }
 
                 Sprite2 sprite2 =sprites2.get(0);
+                Canvas canvas = new Canvas();
 
                 if (sprite2.isLeftTouch(event.getX())){
-                    sprite2.update();
-                }
+                    sprite2.update(1);
+                }else sprite2.update(2);
 
             }
         }    
